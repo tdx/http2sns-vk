@@ -15,7 +15,8 @@ func (hh *Handler) Handle(w http.ResponseWriter, r *http.Request, debug bool) {
 	decoded := SubscriptionConfirmation{}
 	err := json.NewDecoder(r.Body).Decode(&decoded)
 	if err != nil {
-		hh.httpError(w, debug, http.StatusBadRequest,
+		log.Printf("%s %s json.Decode() failed: %v", ident, r.RemoteAddr, err)
+		hh.httpError(w, http.StatusBadRequest,
 			"Failed to decode JSON in the body: %s", err)
 		return
 	}
@@ -27,8 +28,8 @@ func (hh *Handler) Handle(w http.ResponseWriter, r *http.Request, debug bool) {
 
 	fullURL := fmt.Sprintf("%s://%s%s", reqProto, r.Host, r.URL.String())
 	if debug {
-		log.Printf("%s subscription confirmation request for: %s\n",
-			ident, fullURL)
+		log.Printf("%s %s subscription confirmation request for: %s\n",
+			ident, r.RemoteAddr, fullURL)
 	}
 
 	response := struct {
@@ -39,14 +40,15 @@ func (hh *Handler) Handle(w http.ResponseWriter, r *http.Request, debug bool) {
 	w.Header().Set("Content-Type", "application/json")
 	jsonBody, err := json.Marshal(&response)
 	if err != nil {
-		hh.httpError(w, debug, http.StatusInternalServerError,
+		log.Printf("%s %s json.Marshal() failed: %v", ident, r.RemoteAddr, err)
+		hh.httpError(w, http.StatusInternalServerError,
 			"Failed to marshal json: %s", err)
 		return
 	}
 
 	if debug {
-		log.Printf("%s subscription configmation response for: %s\n%s\n",
-			ident, fullURL, string(jsonBody))
+		log.Printf("%s %s subscription confirmation response for: %s\n%s\n",
+			ident, r.RemoteAddr, fullURL, string(jsonBody))
 	}
 
 	w.Write(jsonBody)
@@ -55,12 +57,7 @@ func (hh *Handler) Handle(w http.ResponseWriter, r *http.Request, debug bool) {
 //
 func (hh *Handler) httpError(
 	w http.ResponseWriter,
-	debug bool,
 	code int, format string, args ...interface{}) {
 
-	text := fmt.Sprintf(format, args...)
-	if debug {
-		log.Printf("%s %s\n", ident, text)
-	}
-	http.Error(w, text, code)
+	http.Error(w, fmt.Sprintf(format, args...), code)
 }
