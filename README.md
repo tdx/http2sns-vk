@@ -23,9 +23,9 @@ debug := true
 subHandler := vk.NewHandler(debug)
 
 mux.Handle("/some_endpoint",
-        h2sHttp.SubscriptionConfimaton(subHandler,
-            http.HandlerFunc(handler)),
-		)
+    h2sHttp.SubscriptionConfimaton(subHandler,
+        http.HandlerFunc(handler)),
+)
 
 func handler(w http.ResponseWriter, r *http.Request) {
     fmt.Println("got S3 VK Cloud bucket change notification!")
