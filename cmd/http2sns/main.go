@@ -33,4 +33,6 @@ func dumpConfig(cfg *config.Config) {
 	log.Printf("%s http.listen.addr: %s\n", ident, cfg.HttpListenAddr)
 	log.Printf("%s http.endpoint.topic: %v\n", ident, cfg.HttpEndpointTopic)
 	log.Printf("%s http.debug: %v\n", ident, cfg.HttpDebug)
+	log.Printf("%s sns.region: %v\n", ident, cfg.SnsRegion)
+	log.Printf("%s sns.api.endpoint: %v\n", ident, cfg.SnsApiEndpoint)
 }
