@@ -9,11 +9,11 @@ import (
 
 //
 type Config struct {
-	HttpListenAddr    string         `envconfig:"HTTP_LISTEN_ADDR" default:":80"`
-	HttpEndpointTopic MapEndpointArn `envconfig:"HTTP_ENDPOINT_TOPIC"`
-	HttpDebug         bool           `envconfig:"HTTP_DEBUG"       default:"false"`
-	SnsApiEndpoint    string         `envconfig:"SNS_API_ENDPOINT"`
-	SnsRegion         string         `envconfig:"REGION"           default:"eu-central-1"`
+	HttpListenAddr    string         `envconfig:"H2S_HTTP_LISTEN_ADDR"    default:":80"`
+	HttpEndpointTopic MapEndpointArn `envconfig:"H2S_HTTP_ENDPOINT_TOPIC"`
+	HttpDebug         bool           `envconfig:"H2S_HTTP_DEBUG"          default:"false"`
+	SnsRegion         string         `envconfig:"H2S_SNS_REGION"          default:"eu-central-1"`
+	SnsApiEndpoint    string         `envconfig:"H2S_SNS_API_ENDPOINT"`
 }
 
 // NewConfig creates and initialize a new instance of Config from env vars
