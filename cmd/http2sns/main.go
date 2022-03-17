@@ -25,7 +25,7 @@ func main() {
 		log.Printf("%s %v\n", ident, err)
 		os.Exit(1)
 	}
-	subHandler := vk.NewHandler()
+	subHandler := vk.NewHandler(cfg.HttpDebug)
 	http.Start(cfg, subHandler, snsPublisher)
 }
 

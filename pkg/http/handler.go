@@ -1,12 +1,9 @@
 package http
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/http/httputil"
-	"strings"
 	"time"
 )
 
@@ -39,44 +36,4 @@ func (s *srv) handler(w http.ResponseWriter, r *http.Request) {
 	// slow bad request reply
 	time.Sleep(time.Second)
 	http.Error(w, "bad request", http.StatusBadRequest)
-}
-
-// Middleware to handle subscription confirmation
-func (s *srv) subscriptionConfimation(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-		s.dump(r)
-
-		// X-Amz-Sns-Message-Type: SubscriptionConfirmation
-		snsType := strings.ToLower(r.Header.Get("X-Amz-Sns-Message-Type"))
-		switch snsType {
-		case "subscriptionconfirmation":
-			s.sch.Handle(w, r, s.debug)
-		default:
-			next.ServeHTTP(w, r)
-		}
-	})
-}
-
-//
-func (s *srv) dump(r *http.Request) {
-	if !s.debug {
-		return
-	}
-
-	// dump url
-	reqProto := r.Header.Get("X-Forwarded-Proto")
-	if reqProto == "" {
-		reqProto = "http"
-	}
-	fullURL := fmt.Sprintf("%s://%s%s", reqProto, r.Host, r.URL.String())
-	log.Printf("%s %s got http request %s\n", ident, r.RemoteAddr, fullURL)
-
-	// dump request
-	dump, err := httputil.DumpRequest(r, true)
-	if err != nil {
-		log.Printf("%s %s failed to dump requst: %v\n", ident, r.RemoteAddr, err)
-		return
-	}
-	log.Printf("%s %s\n%s\n", ident, r.RemoteAddr, dump)
 }

@@ -8,7 +8,7 @@ import (
 )
 
 // handle all subscription confirmations
-func (hh *Handler) Handle(w http.ResponseWriter, r *http.Request, debug bool) {
+func (hh *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
 
@@ -27,7 +27,7 @@ func (hh *Handler) Handle(w http.ResponseWriter, r *http.Request, debug bool) {
 	}
 
 	fullURL := fmt.Sprintf("%s://%s%s", reqProto, r.Host, r.URL.String())
-	if debug {
+	if hh.debug {
 		log.Printf("%s %s subscription confirmation request for: %s\n",
 			ident, r.RemoteAddr, fullURL)
 	}
@@ -46,7 +46,7 @@ func (hh *Handler) Handle(w http.ResponseWriter, r *http.Request, debug bool) {
 		return
 	}
 
-	if debug {
+	if hh.debug {
 		log.Printf("%s %s subscription confirmation response for: %s\n%s\n",
 			ident, r.RemoteAddr, fullURL, string(jsonBody))
 	}
