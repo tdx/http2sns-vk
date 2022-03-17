@@ -19,8 +19,11 @@ func (mea *MapEndpointArn) Decode(value string) error {
 		if len(kvpair) != 2 {
 			return fmt.Errorf("invalid map item: %q", pair)
 		}
+		// skip empty values
+		if kvpair[0] == "" || kvpair[1] == "" {
+			continue
+		}
 		m[kvpair[0]] = kvpair[1]
-
 	}
 	*mea = MapEndpointArn(m)
 	return nil

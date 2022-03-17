@@ -25,7 +25,7 @@ func (s *srv) handler(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s %s empty body", ident, r.RemoteAddr)
 	}
 
-	if topic, ok := s.endpoint2topic[r.URL.Path]; ok && topic != "" {
+	if topic, ok := s.endpoint2topic[r.URL.Path]; ok {
 		if err = s.sns.Publish(topic, string(data)); err != nil {
 			log.Printf("%s %s Publish() failed: %v", ident, r.RemoteAddr, err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
