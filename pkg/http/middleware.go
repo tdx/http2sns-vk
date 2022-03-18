@@ -11,7 +11,7 @@ import (
 )
 
 // SubscriptionConfimation is a HTTP middleware to handle subscription confirmation
-func SubscriptionConfimaton(
+func SubscriptionConfirmaton(
 	sch subApi.SubscriptionConfirmationHandler,
 	next http.Handler) http.Handler {
 

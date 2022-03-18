@@ -60,7 +60,7 @@ func (s *srv) initEndpoints() {
 		}
 		s.mux.Handle(endpoint,
 			DumpRequest(s.debug,
-				SubscriptionConfimaton(s.sch,
+				SubscriptionConfirmaton(s.sch,
 					http.HandlerFunc(s.handler)),
 			),
 		)

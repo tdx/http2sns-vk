@@ -23,7 +23,7 @@ debug := true
 subHandler := vk.NewHandler(debug)
 
 mux.Handle("/some_endpoint",
-    h2sHttp.SubscriptionConfimaton(subHandler,
+    h2sHttp.SubscriptionConfirmaton(subHandler,
         http.HandlerFunc(handler)),
 )
 
